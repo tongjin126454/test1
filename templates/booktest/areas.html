@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>省市县级地区</title>
+    <script src="/static/js/jquery-1.12.4.min.js"></script>
+    <script>
+        $(function () {
+          $.get('/prov',function (data) {
+              res = data.data
+              prov = $('#prov')
+              for (i=0; i<res.length; i++){
+                  id = res[i][0]
+                  atitle = res[i][1]
+                  option_str = '<option value="'+id+'">'+atitle+'</option>'
+                  prov.append(option_str)
+              }
+
+
+          })
+          $('#prov').change(function () {
+                prov_id = $(this).val()
+                $.get('/city'+prov_id,function (data) {
+                    // 遍历取值添加到city下拉的表框中
+                    res = data.data
+                    city = $('#city')
+                    city.empty().append('<option>---请选择市---</option>')
+                    //情况下拉表框
+                    $.each(res,function (index,item) {
+                    id = item[0]
+                    atitle = item[1]
+                    option_str = '<option value="'+id+'">'+atitle+'</option>'
+                    city.append(option_str)
+                    })
+
+
+                })
+                })
+            $('#city').change(function () {
+                city_id = $(this).val()
+                $.get('/dis'+city_id,function (data) {
+                    // 遍历取值添加到city下拉的表框中
+                    res = data.data
+                    dis = $('#dis')
+                    dis.empty().append('<option>---请选择县---</option>')
+                    //情况下拉表框
+                    $.each(res,function (index,item) {
+                    id = item[0]
+                    atitle = item[1]
+                    option_str = '<option value="'+id+'">'+atitle+'</option>'
+                    dis.append(option_str)
+                    })
+
+
+                })
+                })
+          })
+    </script>
+</head>
+<body>
+    <select id="prov">
+        <option>---请选择省---</option>
+    </select>
+    <select id="city">
+        <option>---请选择市---</option>
+    </select>
+    <select id="dis">
+        <option>---请选择县---</option>
+    </select>
+</body>
+</html>
